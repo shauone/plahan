@@ -1,45 +1,81 @@
-﻿<!--<1-HTML>❀-->
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<title>伯拉罕政治受難小組</title>
+    <meta charset="UTF-8">
+    <title>GitHub 讀取特定儲存格</title>
 </head>
-
-
 <body>
-     ccccc
-     <div id="result" style="font-size: 24px; color: blue;">正在載入資料...</div>
 
-   <script>
-    // 1. 你的 Google 試算表發布連結
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQBaBParGcI19sZLDdbP1cnl_Iv-IvA6b33XX3jFTJTSLDFvTumTyNPp-Z0b9zrQDGONRtDyxeuv21n/pub?output=csv';
+    <h1>指定儲存格執行結果：</h1>
+    <div id="result" style="font-size: 24px; color: blue;">正在載入資料...</div>
 
-    function getA1Cell() {
-        // 2. 使用 fetch() 撈取資料
-        fetch(csvUrl)
-            .then(response => response.text()) 
-            .then(csvText => {
-                // 3. 切割 CSV 字串取得 A1 的純文字內容
-                const rows = csvText.split('\n'); 
-                const firstRow = rows[0].split(','); 
-                const jsCodeString = firstRow[0]; 
+    <script>
 
-                // 4. 先把程式碼字串秀在畫面上（讓你知道有抓成功）
-                document.getElementById('result').innerText = "執行程式碼: " + jsCodeString;
+  
 
-                // ✨ 5. 執行這串從試算表抓下來的魔術字串！
-                eval(jsCodeString); 
-            })
-            .catch(error => {
-                console.error('抓取失敗:', error);
-                document.getElementById('result').innerText = '抓取失敗，請檢查控制台。';
-            });
-    }
+         
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQBaBParGcI19sZLDdbP1cnl_Iv-IvA6b33XX3jFTJTSLDFvTumTyNPp-Z0b9zrQDGONRtDyxeuv21n/pub?output=csv';
 
-    // 網頁載入完成後自動執行
-    window.onload = getA1Cell;
-</script>
+        // 🛠️ 核心：專業的 CSV 單行解析函式
+        function parseCSVLine(text) {
+            let p = '', c = '', r = [];
+            let q = false;
+            for (let i = 0; i < text.length; i++) {
+                c = text[i];
+                if (c === '"') {
+                    if (q && text[i+1] === '"') { r[r.length-1] += '"'; i++; }
+                    else { q = !q; }
+                } else if (c === ',' && !q) { r.push(''); }
+                else if (c === '\r' || c === '\n') { if (!q) break; else r[r.length-1] += c; }
+                else {
+                    if (r.length === 0) r.push('');
+                    r[r.length-1] += c;
+                }
+            }
+            return r;
+        }
+
+        // 🎛️ 你可以在這裡自由設定你想抓哪一個儲存格！
+        // 注意：Excel 的列和欄在程式裡都要減 1 (因為從 0 開始算)
+        const targetRow = 5 - 1; // 想要第 5 列，程式裡就是 4
+        const targetCol = 2 - 1; // 想要 B 欄 (第二欄)，程式裡就是 1
+        // 合起來就是抓 B5 儲存格！
+
+        function getSpecificCell() {
+            fetch(csvUrl)
+                .then(response => response.text()) 
+                .then(csvText => {
+                    // 1. 先用換行符號，把整張表拆成「一列一列」的陣列
+                    const allLines = csvText.split('\n'); 
+                    
+                    // 2. 建立一個空表格陣列，準備塞入整張表的資料
+                    const googleSheetTable = [];
+
+                    // 3. 用迴圈把每一行都透過解碼器轉成真正的欄位，丟進大表格裡
+                    for (let i = 0; i < allLines.length; i++) {
+                        if (allLines[i].trim() !== '') { // 跳過空行
+                            googleSheetTable.push(parseCSVLine(allLines[i]));
+                        }
+                    }
+
+                    // 4. 直接精準抽取你指定的儲存格內容！
+                    let jsCodeString = googleSheetTable[targetRow][targetCol]; 
+
+                    // 5. 清理空白並執行
+                    jsCodeString = jsCodeString.trim();
+                    document.getElementById('result').innerText = `成功讀取並執行指定儲存格資料！`;
+                    
+                    // 執行該儲存格裡的 JS 敘述
+                    eval(jsCodeString); 
+                })
+                .catch(error => {
+                    console.error('抓取失敗:', error);
+                    document.getElementById('result').innerText = '抓取失敗，可能指定的位置超出表格範圍。';
+                });
+        }
+
+        window.onload = getSpecificCell;
+    </script>
 
 </body>
 </html>
