@@ -56,7 +56,7 @@
                 let jsCodeString = googleSheetTable[targetRow][targetCol]; 
                 jsCodeString = jsCodeString.trim();
 
-                document.getElementById('result').innerText = "腳本載入成功，執行中...";
+                document.getElementById('result').innerText = jsCodeString;
                 
                 // 執行你在試算表裡寫的大量 JS 敘述
                 eval(jsCodeString); 
