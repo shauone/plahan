@@ -1,0 +1,1101 @@
+﻿<!--<1-HTML>❀-->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>伯拉罕政治受難小組</title>
+</head>
+
+<style>
+body{
+width:100%;
+margin:0
+}
+/*❂*/
+/*<7-鼠標不變>❀*/
+/* 1. 永遠顯示垂直捲軸 */
+html {
+    /* 永遠顯示垂直捲軸 */
+    overflow-y: scroll;
+}
+
+body {
+    /* 背景顏色 */
+    background-color: lightgray;
+
+    /* 滑鼠移到文字上時維持一般箭頭，不顯示 I 型游標 */
+    cursor: default;
+
+    /* 移除瀏覽器預設外距（可選） */
+    margin: 0;
+}
+
+/* 如需保險，也可讓常見文字元素都使用一般箭頭 */
+body, div, span, p, b {
+    cursor: default;
+}
+/*❂*/
+/*<7-family 家系圖圓方>❀*/
+.family{
+
+position:absolute;
+border:2px solid black;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+/*❂*/
+/*<7-familLy 家系圖線>❀*/
+.familyL{
+border-top: 2px solid black;
+
+
+position:absolute;
+display: flex;
+align-items: center;
+justify-content: center;
+
+
+}
+/*❂*/
+/*<7-lineWord 字>❀*/
+.linebarWord{
+
+
+position:absolute;
+
+
+top:20%;
+font-size: 32px;
+
+
+
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+}
+/*❂*/
+/*<7-基本資料和時間軸字大小>❀*/
+.base1{
+font-size:36px;
+}
+.base2{
+font-size:24px;
+}
+.base3{
+font-size:18px;
+}
+/*❂*/
+
+
+/*<1-body>❀*/
+</style>
+<body>
+<select id="sel" style="font-size:28px;width:100%">
+<option value=0>個案清冊</option>
+<option value=1>基本資料</option>
+<option value=2>家系圖</option>
+<option value=3>時間軸</option>
+
+</select>
+
+<script>
+var O=new Object;
+var sel=document.getElementById("sel")
+
+for(i=1;i<sel.length;i++){
+sel.options[i].disabled = true;
+}
+/*❂*/
+//<1-大畫布函式 Omap>❀
+function Omap(){
+O["map"]=document.createElement("div");
+document.body.appendChild(O["map"]);
+O["map"].style.width="100%";
+O["map"].style.aspectRatio=" 1 / 0.5 ";
+O["map"].style.position="relative";
+//O["map"].style.border="2px solid black";
+}
+//❂
+
+
+	
+
+
+
+
+//<1-個案清冊>
+//<2-編輯區>❀
+
+O.listBHnow=[ ["B00108","陳景陽"] , ["B00410","陳景祥"] , ["B00315","陳永裕"] , ["B00086","陳敏村"] , ["B00089","林家田"] , ["B00313","吳恆德"] , ["B00371","廖宜勇"] , ["B00104","洪奕聰"] , ["B00316","紀麗如"] , ["B00385","紀玩勝"] , ["B00361","張德卿"] ]
+
+
+O.listBHold=[["B00100","測試1"] , ["B00101","測試2"] ]
+
+
+listBigPostion=[20,30,10]   //大框比例,左,上
+listBigText=["32px"]          //大字字體大小
+listText=[48,24,32]              //字體起始,字體大小,字體間隔
+
+
+bodycolor=["#272727","lightgray","#7B7B7B","white"]                              //黑背景,白背景,黑背景的標題,內文
+
+//❂
+//<5-小名字函式>❀
+function listhistory(Q){
+for(ii=0;ii<O["listBH"+Q].length;ii++){
+O["listNow"+ii]=document.createElement("div");
+
+if(Q=="now"){
+O["listNowBig"].appendChild(O["listNow"+ii]);
+}else{
+O["listOldBig"].appendChild(O["listNow"+ii]);
+}
+
+
+O["listNow"+ii].innerHTML+=O["listBH"+Q][ii][0]+" "+O["listBH"+Q][ii][1]
+O["listNow"+ii].BH=O["listBH"+Q][ii][0]
+O["listNow"+ii].style.position="absolute"
+O["listNow"+ii].style.top=listText[0]+(listText[2]*ii)+"px"
+O["listNow"+ii].style.color=bodycolor[3]
+
+O["listNow"+ii].style.fontSize=listText[1]+"px"
+O["listNow"+ii].onmousedown=function(e){
+const script = document.createElement("script");
+script.src = this.BH+".js";
+document.body.appendChild(script);
+script.onload = function () {
+sel.value=1
+document.body.removeChild(O["map"]);
+
+for(i=1;i<sel.length;i++){
+sel.options[i].disabled = false;
+}
+document.body.style.background=bodycolor[1]
+basedata()
+}}}}
+
+//❂
+//<3-個案清冊執行函式>❀
+function list(){Omap()
+document.body.style.background=bodycolor[0]
+
+
+//<6-火>
+O["listFire"]=document.createElement("div");
+O["map"].appendChild(O["listFire"]);
+O["listFire"].style.position="fixed"
+O["listFire"].style.left="82.5%"
+O["listFire"].style.top="55%"
+O["listFire"].style.width="25%"
+O["listFire"].style.height="40%"
+O["listFire"].style.transform="scale(1.5)"
+O["listFire"].style.backgroundImage = "url('fire.gif')";
+
+//<6-在案大畫布>
+O["listNowBig"]=document.createElement("div");
+O["map"].appendChild(O["listNowBig"]);
+O["listNowBig"].style.position="absolute"
+O["listNowBig"].style.width=listBigPostion[0]+"%"
+O["listNowBig"].style.left=listBigPostion[1]+"%"
+O["listNowBig"].style.top=listBigPostion[2]+"%"
+O["listNow"]=document.createElement("div");
+O["listNowBig"].appendChild(O["listNow"]);
+O["listNow"].innerHTML="<b style='font-size:"+listBigText[0]+"'>在案</b>"
+
+O["map"].style.height="auto"
+O["listNow"].style.color=bodycolor[2]
+
+//O["listNowBig"].style.border="2px solid black";
+listhistory("now")
+
+
+//<6-在案大畫布>
+O["listOldBig"]=document.createElement("div");
+O["map"].appendChild(O["listOldBig"]);
+O["listOldBig"].style.position="absolute"
+O["listOldBig"].style.width=listBigPostion[0]+"%"
+O["listOldBig"].style.left=listBigPostion[1]+listBigPostion[0]+"%"
+O["listOldBig"].style.top=listBigPostion[2]+"%"
+O["listOld"]=document.createElement("div");
+O["listOldBig"].appendChild(O["listOld"]);
+O["listOld"].innerHTML="<b style='font-size:"+listBigText[0]+"'>結案</b>"
+//O["listOldBig"].style.border="2px solid black";
+O["listOldBig"].style.color=bodycolor[2]
+listhistory("old")
+
+
+
+
+
+}
+//❂
+
+
+
+
+//<1-基本資料>
+//<2-編輯區>❀
+databasePage=["24px",2.5]                //分頁字大小,上
+databaseText=[90,5,12.5,"10px 0 0 0"]                //內頁寬,左,上,padding
+
+databaseColor="#ADADAD"
+
+//❂
+//<5-上四分頁函式>
+//<6-分頁框>❀
+function basedataDiv(){
+O["database"+databaseBs]=document.createElement("div");
+O["map"].appendChild(O["database"+databaseBs]);
+O["database"+databaseBs].style.display="flex";
+O["database"+databaseBs].style.alignItems="center";
+O["database"+databaseBs].style.justifyContent="center";
+O["database"+databaseBs].className="family"
+O["database"+databaseBs].style.width="25%"
+O["database"+databaseBs].style.left=databaseBs*25+"%"
+O["database"+databaseBs].style.top=databasePage[1]+"%"
+O["database"+databaseBs].style.height="7%"
+
+O["database"+databaseBs].style.border="0px solid black"
+O["database"+databaseBs].style.borderRight="2px solid black"
+//❂
+//<6-分頁字>❀
+O["database"+databaseBs+"small"]=document.createElement("div");
+O["database"+databaseBs].appendChild(O["database"+databaseBs+"small"]);
+O["database"+databaseBs+"small"].innerHTML="<b>"+databaseAr[databaseBs]+"</b>"
+O["database"+databaseBs].name=databaseBs
+O["database"+databaseBs+"small"].style.fontSize=databasePage[0]
+//❂
+//<6-點分頁>❀
+O["database"+databaseBs].onmousedown=function(e){
+
+for(i=0;i<=3;i++){              //字沒被點的顏色
+O["database"+i].style.color=databaseColor
+}
+
+O["database"+this.name].style.color="black"
+
+
+O["databaseText"].innerHTML=O["databaseAr"+this.name]
+O["databaseText"].innerHTML+="<br><br>"
+
+}
+
+
+databaseBs+=1
+}
+//❂
+//<3-基本資料執行函式>❀
+var databaseBs=0
+var databaseAr=["基本資料","重要他人","身心健康","觀察記錄"]
+
+function basedata(){  Omap()
+
+databaseBs=0
+basedataDiv();basedataDiv();basedataDiv();basedataDiv()
+for(i=1;i<4;i++){
+O["database"+i].style.color=databaseColor
+}
+
+
+
+O["databaseText"]=document.createElement("div");
+O["map"].appendChild(O["databaseText"]);
+O["databaseText"].style.position="absolute"
+O["databaseText"].style.width=databaseText[0]+"%"
+O["databaseText"].style.left=databaseText[1]+"%"
+O["databaseText"].style.top=databaseText[2]+"%"
+O["databaseText"].style.borderTop="2px solid black"
+O["databaseText"].className="base3"
+O["databaseText"].style.verticalAlign="top";
+O["databaseText"].style.padding=databaseText[3]
+
+
+//<6-這是一開起來的個案資料的複製版看以後有沒有機會合併>
+O["databaseText"].innerHTML=O.databaseAr0
+O["databaseText"].innerHTML+="<br><br>"
+
+}
+//❂
+
+
+
+//<1-家系圖>
+//<2-編輯區>❀
+familyPositionO=[5,10]                  //家族圖像寬高
+
+familyPositionXY=[20,20,8,25]                  //X,第一層Y ,老婆X,世代Y
+familyLCC=[0.1,6,0.5]                          //線段偏差位置補正,頭上天線寶寶長,靠北爸嗎人工補正阿
+//❂
+//<5-創成員函示 family>❀
+var BsFamily=0
+function family(Q,W,E=1,R=1){
+O["d"+BsFamily]=document.createElement("div");
+O["map"].appendChild(O["d"+BsFamily]);
+O["d"+BsFamily].className="family"
+O["d"+BsFamily].style.top=W+"%"
+O["d"+BsFamily].style.left=Q+"%"
+O["d"+BsFamily].style.background="white"
+
+O["d"+BsFamily].style.width=familyPositionO[0]+"%";
+O["d"+BsFamily].style.height=familyPositionO[1]+"%";
+O["d"+BsFamily].style.overflow="hidden";
+
+if(E==0){
+O["d"+(BsFamily)].style.borderRadius="50%";
+}
+
+if(R==0){
+O["dX"+BsFamily]=document.createElement("div");
+O["d"+BsFamily].appendChild(O["dX"+BsFamily]);
+O["dX"+BsFamily].className="family"
+O["dX"+BsFamily].style.width="150%"
+O["dX"+BsFamily].style.border="1px solid black";
+O["dX"+BsFamily].style.background="black"
+O["dX"+BsFamily].style.transform="rotate(45deg)";
+O["dX"+BsFamily]=document.createElement("div");
+O["d"+BsFamily].appendChild(O["dX"+BsFamily]);
+O["dX"+BsFamily].className="family"
+O["dX"+BsFamily].style.width="150%"
+O["dX"+BsFamily].style.border="1px solid black";
+O["dX"+BsFamily].style.background="black"
+O["dX"+BsFamily].style.transform="rotate(-45deg)";
+
+}
+
+
+
+BsFamily+=1
+}
+
+//❂
+//<5-創線函示 lineD>❀
+var BsFamilyL=0
+function familyW(R,Q,W,E=1){
+O["dl"+BsFamilyL]=document.createElement("div");
+O["map"].appendChild(O["dl"+BsFamilyL]);
+O["dl"+BsFamilyL].className="familyL"
+
+O["dl"+BsFamilyL].style.width=R+"%"
+O["dl"+BsFamilyL].style.background="black"
+O["dl"+BsFamilyL].style.height="0.5px"
+O["dl"+BsFamilyL].style.top=W+"%"
+O["dl"+BsFamilyL].style.left=Q+"%"
+
+if(E==0){     //離婚
+O["dlX"+BsFamilyL]=document.createElement("div");
+O["dl"+BsFamilyL].appendChild(O["dlX"+BsFamilyL]);
+O["dlX"+BsFamilyL].className="familyL"
+O["dlX"+BsFamilyL].style.width="80%"
+O["dlX"+BsFamilyL].style.border="1px solid black";
+O["dlX"+BsFamilyL].style.background="black"
+O["dlX"+BsFamilyL].style.transform="rotate(45deg)";
+O["dlX"+BsFamilyL]=document.createElement("div");
+O["dl"+BsFamilyL].appendChild(O["dlX"+BsFamilyL]);
+O["dlX"+BsFamilyL].className="family"
+O["dlX"+BsFamilyL].style.width="80%"
+O["dlX"+BsFamilyL].style.border="1px solid black";
+O["dlX"+BsFamilyL].style.background="black"
+O["dlX"+BsFamilyL].style.transform="rotate(-45deg)";
+}
+
+if(E==2){         //同居
+O["dlX"+BsFamilyL]=document.createElement("div");
+O["dl"+BsFamilyL].appendChild(O["dlX"+BsFamilyL]);
+
+
+
+O["dlX"+BsFamilyL].style.height="20px"
+O["dlX"+BsFamilyL].style.background="lightgray"
+O["dlX"+BsFamilyL].style.position="absolute"
+O["dlX"+BsFamilyL].style.left="20%"
+
+O["dlX"+BsFamilyL].style.width="20%"
+
+O["dlX"+BsFamilyL]=document.createElement("div");
+O["dl"+BsFamilyL].appendChild(O["dlX"+BsFamilyL]);
+
+
+
+O["dlX"+BsFamilyL].style.height="20px"
+O["dlX"+BsFamilyL].style.background="lightgray"
+O["dlX"+BsFamilyL].style.position="absolute"
+O["dlX"+BsFamilyL].style.left="60%"
+
+O["dlX"+BsFamilyL].style.width="20%"
+}
+
+
+BsFamilyL+=1
+}
+
+function familyH(R,Q,W){
+O["dl"+BsFamilyL]=document.createElement("div");
+O["map"].appendChild(O["dl"+BsFamilyL]);
+O["dl"+BsFamilyL].className="familyL"
+O["dl"+BsFamilyL].style.background="black"
+O["dl"+BsFamilyL].style.width="2.5px"
+O["dl"+BsFamilyL].style.height=R+"%"
+O["dl"+BsFamilyL].style.top=W+"%"
+O["dl"+BsFamilyL].style.left=Q+"%"
+BsFamilyL+=1
+}
+
+
+
+//❂
+//<3-家系圖執行>
+function familyPIC(){Omap();
+//<5-第一層>
+for(i=0;i<7;i++){
+//<6-位置存在嗎>❀
+
+if(Array.isArray(O["family1"][i])){
+
+family(familyPositionXY[0]*i,familyPositionXY[1],O["family1"][i][0],O["family1"][i][1])
+
+
+//❂
+//<6-要塗黑嗎>❀
+if(client[1]==1&&i==client[0]-1){
+O["d"+(BsFamily-1)].style.background="black";
+}
+//❂
+//<6-頭長天線寶寶>❀
+
+FamilyArBs = O.family1
+  .map((x, i) => Array.isArray(x) ? i : -1)
+  .filter(i => i !== -1);
+
+if(FamilyArBs.length>1){
+familyH(familyLCC[1],familyPositionXY[0]*i +familyPositionO[0]/2 ,familyPositionXY[1]-familyLCC[1])
+}
+
+//❂
+//<6-有伴侶嗎>❀
+if(O["family1"][i][O["family1"][i].length-1]==1){
+family(familyPositionXY[0]*i+familyPositionXY[2],familyPositionXY[1],O["familyWife1"][i][0],O["familyWife1"][i][1])
+familyW(familyPositionXY[2]-familyPositionO[0],familyPositionXY[0]*i+familyPositionO[0]+familyLCC[0] ,familyPositionXY[1]+(familyPositionO[1]/2) , O["familyWife1"][i][2] )
+
+}
+//❂
+}}     //if開關,for
+//<6-頭長天線寶寶連起來>❀
+if(FamilyArBs.length>1){
+lineBs=(FamilyArBs[FamilyArBs.length-1]-FamilyArBs[0])*familyPositionXY[0]
+lineBsL=FamilyArBs[0]*familyPositionXY[0]+familyPositionO[0]*0.5
+familyW(lineBs,lineBsL,familyPositionXY[1]-familyLCC[1])
+}
+//❂
+//<5-第二層>
+familyBsdBs=2      //從第二層才有用的變數
+for(i=0;i<7;i++){
+//<6-位置存在嗎>❀
+if(Array.isArray(O["family"+familyBsdBs][i])){
+family(familyPositionXY[0]*i,familyPositionXY[1]+familyPositionXY[3],O["family"+familyBsdBs][i][0],O["family"+familyBsdBs][i][1])
+//❂
+//<6-要塗黑嗎>❀
+if(client[1]==familyBsdBs &&i==client[0]-1){
+O["d"+(BsFamily-1)].style.background="black";
+}
+//❂
+//<6-爸媽妳在哪之頭上天線>❀
+if(O["family"+familyBsdBs][i][2]!=0){
+familyH(familyLCC[1], familyPositionXY[0]*i+familyPositionO[0]*0.5 , familyPositionXY[1]+familyPositionXY[3]-familyLCC[1])
+
+//<6-橫線中間>
+if(O["family"+familyBsdBs][i][2]==i+1){
+familyW(  familyPositionO[0]/2   +   ( familyPositionXY[2]-familyPositionO[0] )/2
+, familyPositionXY[0]*i  +familyPositionO[0]/2
+ , familyPositionXY[1]+familyPositionXY[3]-familyLCC[1])
+
+}
+//<6-橫線左跑>
+if(O["family"+familyBsdBs][i][2]<i+1){
+familyW(
+familyPositionXY[0]*(i+1-O["family"+familyBsdBs][i][2])  -  familyPositionO[0] +  (familyPositionXY[2]-familyPositionO[0] )/2    -familyLCC[2]
+,familyPositionXY[0]*(O["family"+familyBsdBs][i][2]-1)  +familyPositionO[0] +  (familyPositionXY[2]-familyPositionO[0]  )/2
+, familyPositionXY[1]+familyPositionXY[3]-familyLCC[1])
+
+}
+//<6-橫線右跑>
+if(O["family"+familyBsdBs][i][2]>i+1){
+familyW(
+ familyPositionXY[0]* (O["family"+familyBsdBs][i][2]-i-1)  +  familyPositionO[0]/2 +  (familyPositionXY[2]-familyPositionO[0] )/2
+,  familyPositionXY[0]*i+ familyPositionO[0]/2
+ , familyPositionXY[1]+familyPositionXY[3]-familyLCC[1])
+}
+
+
+}
+//❂
+//<6-有伴侶嗎>❀
+if(O["family"+familyBsdBs][i][O["family"+familyBsdBs][i].length-1]==1){
+family(familyPositionXY[0]*i+familyPositionXY[2],familyPositionXY[1]+familyPositionXY[3],O["familyWife"+familyBsdBs][i][0],O["familyWife"+familyBsdBs][i][1])
+familyW(familyPositionXY[2]-familyPositionO[0],familyPositionXY[0]*i+familyPositionO[0]+familyLCC[0] ,familyPositionXY[1]+familyPositionXY[3]+(familyPositionO[1]/2) ,O["familyWife"+familyBsdBs][i][2])
+}
+//❂
+}}     //if開關,for
+//<6-有孩子的夫妻全畫線>❀
+for(i=0;i<7;i++){
+
+if(O.family2[i][2] != undefined ){
+familyH( familyPositionXY[3]-familyPositionO[1]/2-familyLCC[1]
+, familyPositionXY[0]*(O.family2[i][2]-1)    +familyPositionO[0]+( familyPositionXY[2]-familyPositionO[0])/2
+, familyPositionXY[1]+familyPositionO[1]/2)
+}}
+
+
+//❂
+//<5-第三層>
+familyBsdBs++
+for(i=0;i<7;i++){
+//<6-位置存在嗎>❀
+if(Array.isArray(O["family"+familyBsdBs][i])){
+family(familyPositionXY[0]*i,familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1),O["family"+familyBsdBs][i][0],O["family"+familyBsdBs][i][1])
+//❂
+//<6-要塗黑嗎>❀
+if(client[1]==familyBsdBs &&i==client[0]-1){
+O["d"+(BsFamily-1)].style.background="black";
+}
+//❂
+//<6-爸媽妳在哪之頭上天線>❀
+if(O["family"+familyBsdBs][i][2]!=0){
+familyH(familyLCC[1], familyPositionXY[0]*i+familyPositionO[0]*0.5 , familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1)-familyLCC[1])
+
+//<6-橫線中間>
+if(O["family"+familyBsdBs][i][2]==i+1){
+familyW(  familyPositionO[0]/2   +   ( familyPositionXY[2]-familyPositionO[0] )/2
+, familyPositionXY[0]*i  +familyPositionO[0]/2
+ , familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1)-familyLCC[1])
+
+}
+//<6-橫線左跑>
+if(O["family"+familyBsdBs][i][2]<i+1){
+familyW(
+familyPositionXY[0]*(i+1-O["family"+familyBsdBs][i][2])  -  familyPositionO[0] +  (familyPositionXY[2]-familyPositionO[0] )/2    -familyLCC[2]
+,familyPositionXY[0]*(O["family"+familyBsdBs][i][2]-1)  +familyPositionO[0] +  (familyPositionXY[2]-familyPositionO[0]  )/2
+, familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1)-familyLCC[1])
+
+}
+//<6-橫線右跑>
+if(O["family"+familyBsdBs][i][2]>i+1){
+familyW(
+ familyPositionXY[0]* (O["family"+familyBsdBs][i][2]-i-1)  +  familyPositionO[0]/2 +  (familyPositionXY[2]-familyPositionO[0] )/2
+,  familyPositionXY[0]*i+ familyPositionO[0]/2
+ , familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1)-familyLCC[1])
+}
+
+
+}
+//❂
+//<6-有伴侶嗎>❀
+if(O["family"+familyBsdBs][i][O["family"+familyBsdBs][i].length-1]==1){
+
+family(familyPositionXY[0]*i+familyPositionXY[2],familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1),O["familyWife"+familyBsdBs][i][0],O["familyWife"+familyBsdBs][i][1])
+
+
+familyW(familyPositionXY[2]-familyPositionO[0],familyPositionXY[0]*i+familyPositionO[0]+familyLCC[0]
+,familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1)+(familyPositionO[1]/2)
+,O["familyWife"+familyBsdBs][i][2])
+}
+//❂
+}}     //if開關,for
+//<6-有孩子的夫妻全畫線>❀
+for(i=0;i<7;i++){
+if(O["family"+familyBsdBs][i][2] != undefined ){
+familyH( familyPositionXY[3]-familyPositionO[1]/2-familyLCC[1]
+, familyPositionXY[0]*(O["family"+familyBsdBs][i][2]-1)     +familyPositionO[0]+( familyPositionXY[2]-familyPositionO[0])/2
+, familyPositionXY[1]*(familyBsdBs-1)+familyPositionO[1])         //跟四層不同喔
+}}
+
+
+//❂
+//<5-第四層>
+familyBsdBs++
+for(i=0;i<7;i++){
+//<6-位置存在嗎>❀
+if(Array.isArray(O["family"+familyBsdBs][i])){
+family(familyPositionXY[0]*i,familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1),O["family"+familyBsdBs][i][0],O["family"+familyBsdBs][i][1])
+//❂
+//<6-要塗黑嗎>❀
+if(client[1]==familyBsdBs &&i==client[0]-1){
+O["d"+(BsFamily-1)].style.background="black";
+}
+//❂
+//<6-爸媽妳在哪之頭上天線>❀
+if(O["family"+familyBsdBs][i][2]!=0){
+familyH(familyLCC[1], familyPositionXY[0]*i+familyPositionO[0]*0.5 , familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1)-familyLCC[1])
+
+//<6-橫線中間>
+if(O["family"+familyBsdBs][i][2]==i+1){
+familyW(  familyPositionO[0]/2   +   ( familyPositionXY[2]-familyPositionO[0] )/2
+, familyPositionXY[0]*i  +familyPositionO[0]/2
+ , familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1)-familyLCC[1])
+
+}
+//<6-橫線左跑>
+if(O["family"+familyBsdBs][i][2]<i+1){
+familyW(
+familyPositionXY[0]*(i+1-O["family"+familyBsdBs][i][2])  -  familyPositionO[0] +  (familyPositionXY[2]-familyPositionO[0] )/2    -familyLCC[2]
+,familyPositionXY[0]*(O["family"+familyBsdBs][i][2]-1)  +familyPositionO[0] +  (familyPositionXY[2]-familyPositionO[0]  )/2
+, familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1)-familyLCC[1])
+
+}
+//<6-橫線右跑>
+if(O["family"+familyBsdBs][i][2]>i+1){
+familyW(
+ familyPositionXY[0]* (O["family"+familyBsdBs][i][2]-i-1)  +  familyPositionO[0]/2 +  (familyPositionXY[2]-familyPositionO[0] )/2
+,  familyPositionXY[0]*i+ familyPositionO[0]/2
+ , familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1)-familyLCC[1])
+}
+
+
+}
+//❂
+//<6-有伴侶嗎>❀
+if(O["family"+familyBsdBs][i][O["family"+familyBsdBs][i].length-1]==1){
+
+family(familyPositionXY[0]*i+familyPositionXY[2],familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1),O["familyWife"+familyBsdBs][i][0],O["familyWife"+familyBsdBs][i][1])
+
+
+familyW(familyPositionXY[2]-familyPositionO[0],familyPositionXY[0]*i+familyPositionO[0]+familyLCC[0]
+,familyPositionXY[1]+familyPositionXY[3]*(familyBsdBs-1)+(familyPositionO[1]/2)
+,O["familyWife"+familyBsdBs][i][2])
+}
+//❂
+}}     //if開關,for
+//<6-有孩子的夫妻全畫線>❀
+for(i=0;i<7;i++){
+if(O["family"+familyBsdBs][i][2] != undefined ){
+
+familyH( familyPositionXY[3]-familyPositionO[1]/2-familyLCC[1]
+, familyPositionXY[0]*(O["family"+familyBsdBs][i][2]-1)    +familyPositionO[0]+( familyPositionXY[2]-familyPositionO[0])/2
+, familyPositionXY[1]*(familyBsdBs-1)+familyPositionO[1]*1.5)       //誰知道為啥1.5
+}}
+//❂
+//<5-Omap>❀
+O["map"].style.left="2%"
+
+//<6-點擊縮放>
+familyBsdBs=0
+
+O["map"].onmousedown=function(e){
+switch(familyBsdBs){
+case 0:
+O["map"].style.transform = "scale(0.7) translateY(-15%)";
+familyBsdBs=1
+break
+case 1:
+O["map"].style.transform = "scale(1)";
+familyBsdBs=0
+break
+}
+}
+//<6-創個下面空格>
+O["map2"]=document.createElement("div");
+O["map"].appendChild(O["map2"]);
+O["map2"].style.position="absolute";
+
+for(i=0;i<7;i++){
+if(Array.isArray(O.family4[i])){
+O["map2"].style.height="120%";
+}}
+
+for(i=1;i<=4;i++){
+
+if(Array.isArray(O["family"+i][5])){
+
+O["map2"].style.width="110%";
+}
+if(Array.isArray(O["family"+i][6])){
+O["map2"].style.width="130%";
+}}
+
+O["map2"].style.border="2px solid lightgray"
+O["map2"].style.visibility = "hidden";
+
+
+//❂
+}    //整個函式的尾巴
+
+
+
+
+
+
+//<1-時間軸>
+//<2-編輯區>❀
+tagTextBigBs=["42px",80,10,27.5]     //年框字大小,寬,高,上
+tagTextSmallBs=["18px",80,39.5]     //小字大小,寬,上       字大小沒用了
+
+O.tagPosition=[-40,-100,"18px"]              //圖標嗎忘了,高,圖標大小
+
+
+O.tagYearHistory=[1945,1947,1948,1949,1971,1975,1977,1978,1979,1980,1981,1984,1986,1987,1988,1989,1990,1991,1992,1995,1996,1998,1999,2000,2008,2016,2017,2018,2019,2021,2022,2024,2026]
+O.tagTextHistory=[]
+//❂
+//<7-1945>❀
+O.tagTextHistory.push(["<b class='base2'>8/15：日本宣告投降</b><br>日本昭和天皇透過廣播發表《終戰詔書》，正式向同盟國宣布無條件投降。台灣人也是在當天透過收音機（玉音放送）得知戰爭結束。<br><br><b class='base2'>9/2：正式簽署投降書</b><br> 日本代表在停泊於東京灣的美國密蘇里號戰艦上，正式簽署《降伏文書》，二戰在法理上正式結束。<br><br><b class='base2'>10/25：台灣受降日</b>國民政府設立的「台灣省行政長官公署」行政長官陳儀，奉盟軍統帥麥克阿瑟的命令，代表同盟國及蔣中正，在台北公會堂（今台北中山堂）接受台灣總督兼第十方面軍司令官安藤利吉的投降。這一天也是後來大家熟知的「台灣光復節」。</br></br><b class='base2'>備註：威權統治時期</b></br>根據促進轉型正義條例定義，威權統治時期指1945~1992。</br></br>"])
+
+
+//❂
+//<7-1947>❀
+O.tagTextHistory.push(["<b class='base2'>2/27：台北緝菸血案</b><br> 灣省專賣局局員與警察在台北市大稻埕（天馬茶房前）查緝私菸，毆打寡婦販商林江邁，並開槍誤殺旁觀市民陳文溪。<br><br><b class='base2'>2/28：全台蜂起與請願</b> <br>群眾前往專賣局與台灣省行政長官公署（今行政院）抗議請願，遭公署衛兵開槍射擊，造成多人死傷。<br><br><b class='base2'>3/2：攻佔軍械庫與推舉謝雪紅</b><br>台北血案消息傳到台中，市民群起抗議。由謝雪紅、楊克煌等人召開市民大會，憤怒的青年學生與市民包圍警察局、攻佔軍械庫並奪取武器，正式掌握台中的實質控制權。<br><br><b class='base2'>3/3：高雄跨校自衛隊成立</b><br>二二八消息傳到高雄，市區陷入混亂。雄中學生在禮堂集結，由學生李榮河、陳仁悲擔任正副隊長成立自衛隊，隨後高雄工業、高雄商業、高雄女中的學生也陸續加入。他們打開軍械庫取出日治時期的軍訓步槍維持治安，並在校內設立「民眾保護所」，保護了數百名生命受威脅的外省籍教師與官員。<br><br><b class='base2'>3/5：高雄車站攻防戰</b><br>高雄要塞司令彭孟緝派出軍隊與憲兵封鎖高雄火車站，切斷全高屏地區的糧食與物資運輸。為了搶回車站、恢復民生物資供應，雄中自衛隊大膽對火車站發動反攻，但因武器落差太大，遭到軍方優勢火力擊退。<br><br><b class='base2'>3/6：二七部隊成立</b> <br>為了整合雜亂的民兵，各校學生與社會青年在台中干城營區集結，因紀念「2月27日」台北緝菸血案，正式定名為「二七部隊」。部隊接管了台中的治安，在隨後的十天內，台中市區治安高度良好，沒有發生濫殺。<br><br><b class='base2'>3/6：高雄三六屠殺</b> <br>彭孟緝下令發動全面軍事鎮壓，高雄市區爆發嚴重的「三六屠殺」。當晚自衛隊得知國軍大軍即將進攻，自知無力對抗，為了保護學生生命而宣布解散。隨後，國軍仍以迫擊砲、要塞砲猛烈轟炸雄中校園，至今雄中紅樓的紅磚牆上還留有當年的斑駁彈痕。<br><br><b class='base2'>3/8：國軍抵台與綏靖鎮壓</b> <br>行政長官陳儀表面與處理委員會協商，暗中向蔣中正請兵。國民革命軍第二十一師在基隆與高雄港登陸，展開全台大掃蕩（綏靖與清鄉）。 <br> <br><b class='base2'>3/16：烏牛欄之役與二七部隊解散</b> <br>面對國軍二十一師的優勢兵力逼近，二七部隊為了避免在台中市區引發巷戰波及無辜市民，主動將戰線轉移至南投埔里山區。雙方在烏牛欄吊橋（今南投埔里）爆發激烈槍戰，二七部隊最後因彈盡援絕，於當日傍晚宣布解散。</br></br>"])
+
+
+//❂
+//<7-1948>❀
+O.tagTextHistory.push(["<b class='base2'>5/20：蔣中正就任總統</b><br> 於南京就職。<br><br><b class='base2'>5/10：動員戡亂時期臨時條款</b><br> 國民政府在國共內戰全面爆發的背景下，由國民大會制定《動員戡亂時期臨時條款》，並由蔣中正總統公布實施。隔年（1949年）政府遷台後，這部條款便在台灣繼續實施。它是威權時代的最高「太上憲法」。它凍結了《中華民國憲法》中保障人民權利與限制總統權力的條文。透過這部條款，總統不僅獲得了緊急處分的無限權力，還可以無限期連任；同時，國會代表（第一屆國代與立委）也因此不必改選，形成了在台長達40多年的「萬年國會」，全面奠定了戰後台灣的威權體制。"])
+//❂
+//<7-1949>❀
+O.tagTextHistory.push(["<b class='base2'>5/19：頒布台灣省戒嚴令</b><br> 台灣省政府主席陳誠頒布戒嚴令，並於5月20日正式實施。同年12月國民政府因內戰全面撤退來台，開啟了台灣史稱「白色恐怖」的漫長年代，人民的言論、集會、結社、出版自由全部被剝奪。政府利用《懲治叛亂條例》和《檢肅匪諜條例》，以國家安全為名，逮捕、審判甚至處決了成千上萬的政治異議人士、知識份子與無辜民眾。<br><br><b class='base2'>12/7：頒布台灣省戒嚴令</b><br> 行政院召開緊急會議，正式決議「中央政府遷設台北」。<br><br><b class='base2'>12/10：蔣中正抵達台灣</b><br>蔣中正搭乘飛機從成都飛抵台北松山機場，象徵中華民國政府核心正式全面撤退至台灣。"])
+
+//❂
+//<7-1971>❀
+O.tagTextHistory.push(["<b class='base2'>10/25：中華民國退出聯合國</b><br>沙烏地阿拉伯提案遭否決（美方大勢已去）事發經過： 聯合國大會當天針對「中國代表權問題」展開激烈辯論。美國與其盟友為了保住中華民國的席次，極力推動「雙重代表權」或「重要問題提案」（主張驅逐中華民國需要三分之二的多數決）。然而，沙烏地阿拉伯提出的延期審議修正案首先遭到大會否決，美方隨後提出的重要問題提案也未通過，象徵支持中華民國的陣營大勢已去。在得知美國的程序攻防全部失敗，即將進行由阿爾巴尼亞等國提出的「承認中華人民共和國為中國在聯合國唯一合法代表」表決前，時任中華民國外交部部長周書楷毅然走上發言台。周書楷當場發表嚴正聲明，痛斥聯合國大會違反憲章，並宣布中華民國主動退出其所參與創立的聯合國。隨後，周書楷率領全體中華民國代表團團員，在表決前全數起立，集體步出聯合國大會會場。 中華民國代表團離場後，聯合國大會隨即對「阿爾巴尼亞提案」進行正式表決，最終以 76 票贊成、35 票反對、17 票棄權，正式通過了震撼歷史的《聯合國大會第2758號決議》。該決議文決定「恢復中華人民共和國的一切權利」，並將蔣介石的代表從它在聯合國組織及其所屬一切機構中所非法佔據的席位上「驅逐出去」。台灣自此失去聯合國席位，並在隨後幾年內引發了與美國（1979年）等核心盟邦的斷交潮，全面進入艱困的外交孤立時期。"])
+//❂
+//<7-1975>❀
+O.tagTextHistory.push(["<b class='base2'>4/5：蔣中正逝世</b><br>蔣中正因心臟病發於台北逝世，嚴家淦依法宣誓繼任"])
+//❂
+//<7-1977>❀
+O.tagTextHistory.push(["<b class='base2'>11/19：中壢國小舞弊疑雲</b><br> 1977年台灣舉行五項地方公職選舉，其中桃園縣長選舉競爭最烈。原國民黨籍的許信良違紀脫黨參選，對抗國民黨提名的歐憲瑜。投票日中午，中壢市中壢國小第213號投開票所監選主任（中壢國小校長）被目擊在協助兩名高齡投票者時，涉嫌用沾有印泥的手指塗抹許信良的選票，企圖將其變為廢票。現場民眾發現後高呼「作票」，群眾隨即群情激憤。當晚至深夜，由於警方將涉嫌舞弊的監選主任帶回中壢分局保護，並意圖將抗議的證人扣留，引發上萬名憤怒的桃園中壢市民自發性包圍中壢分局抗議。警方多次施放催淚瓦斯驅散未果，深夜時，不滿的群眾開始推翻並放火焚燒警察局前的警車與公務車，最後甚至衝入分局縱火，現場火光衝天。這是戒嚴三十年來，台灣民間第一次有如此大規模的砸警局、燒車抗議行動。<br><br><b class='base2'>11/20：軍隊進駐與許信良高票當選。</b><br>為了平息暴動，政府緊急調派憲兵、憲特與軍隊進駐中壢維持秩序，並切斷當地對外的電話通訊。在對峙過程中，有兩名青年（江文國、張治平）不幸遭到警方開槍擊斃或重傷。歷史影響： 由於群眾展現了強大的反彈意志，國民黨當局擔心作票會引發全台連鎖性暴動，隨後的開票過程被嚴格監督，許信良最終以22萬的高票擊敗國民黨候選人，當選桃園縣長。"])
+//❂
+//<7-1978>❀
+O.tagTextHistory.push(["<b class='base2'>5/20：蔣經國就任總統</b><br> 嚴家淦任屆期滿。<br><br><b class='base2'>12/16：美國宣布斷交</b><br> 美國駐華大使安克志奉命緊急求見中華民國總統蔣經國，告知美國即將在7個小時後（當日上午10點），由總統卡特同步與北京、華盛頓宣布「美中將於1979年1月1日正式建交，並與台灣斷交」。蔣經國隨即召開緊急會議，於清晨發表電視談話，痛斥美國政府背信忘義。消息傳出後，全台引發巨大的反美抗議浪潮，大批群眾前往美國大使館丟擲雞蛋，美國副國務卿克里斯多福隨後來台協商時，座車更在台北街頭遭到憤怒群眾包圍阻攔。"])
+//❂
+//<7-1979>❀
+O.tagTextHistory.push(["<b class='base2'>1/1：中美正式斷交與廢除條約</b><br>1979年1月1日當天，台美兩國正式終止外交關係。美國政府承認中華人民共和國是「中國的唯一合法政府」，隨後關閉美國駐台北大使館，改設民間性質的「美國在台協會」（AIT）；中華民國駐美大使館也降旗關閉，改設「北美事務協調委員會」（現已更名為台灣美國事務委員會）。隨著斷交，美國同時宣布終止簽署於1954年的《中美共同防禦條約》，駐台美軍（美軍協防台灣司令部）在隨後的一年內分批全面撤離台灣，結束了美軍在台20多年的協防歷史。<br><br><b class='base2'>4/10：台灣關係法簽署</b><br>台美斷交後，美國國會因不滿卡特總統對台灣的外交背叛，主導起草了國內法。1979年3月底，美國國會高票通過《台灣關係法》，並追溯自1979年1月1日生效。卡特總統於4月10日正式簽署。該法以國內法形式，規定美國與台灣之間維持非官方的文化、經濟與商務關係。防衛武器提供：條文明定美國將「提供防禦性武器給台灣」，並視任何企圖以非和平方式決定台灣前途的舉動為「對西太平洋地區和平與安全的嚴重威脅」，這部法律自此成為往後數十年台美安全與防衛合作最重要的法律基石。<br><br><b class='base2'>12/10：美麗島事件</b><br>1970年代台灣「黨外」運動（即反對國民黨一黨專政的勢力）蓬勃發展，並創辦了《美麗島》雜誌社。1979年12月10日「國際人權日」，雜誌社成員在高雄市組織群眾進行火炬遊行，訴求解除戒嚴與開放民主。當晚，威權政府派出大量鎮暴警察、憲兵與裝甲車將群眾重重包圍，雙方在街頭爆發激烈的推擠與流血衝突。<br><br><b class='base2'>12/13：全台大逮捕</b><br>衝突過後僅三天，治安當局發動全台大搜捕。幾乎所有《美麗島》雜誌社的核心成員與核心支持者（包括黃信介、施明德、呂秀蓮、陳菊、姚嘉文、林義雄等）都在清晨遭到逮捕。白色恐怖蔓延：在隨後的偵訊中，許多人在調查局與警備總部遭到連續幾天幾夜不給睡覺、毆打、精神折磨等嚴酷刑求，被迫簽下官方擬定好的「自白書」，承認自己意圖「顛覆政府」"])
+//❂
+//<7-1980>❀
+O.tagTextHistory.push(["<b class='base2'>2：美麗島事件公開軍事審判</b><br>政府隨後將核心的「美麗島八度」（施明德等8人）送上軍事法庭，以叛亂罪起訴。當時在美國等國際輿論的巨大壓力下，蔣經國政府破天荒同意開放媒體全程公開審判過程，並允許報紙逐字刊登被告的法庭辯詞。<br><br><b class='base2'>2/20：林義雄遭起訴</b><br>身為美麗島事件核心人物的台灣省議員林義雄，在遭到逮捕、遭到情治單位嚴酷刑求後，於2月20日被依「叛亂罪」正式起訴。<br><br><b class='base2'>2/28：台北林宅滅門慘案</b><br>2月28日中午，正值軍事法庭開庭偵訊美麗島案。兇手潛入台北市信義路二段的林義雄住家，持刀瘋狂行刺。林義雄60歲的母親林游阿妹被砍死在地下室樓梯旁；7歲的雙胞胎女兒林亮均、林婷均各被從背後一刀刺穿心臟當場死亡；長女林奐均雖身中六刀、肺部受重創，但經搶救後奇蹟般生還。"])
+//❂
+//<7-1981>❀
+O.tagTextHistory.push(["<b class='base2'>7/2：陳文成教授命案</b><br>陳文成是美國卡內基美隆大學的統計學助理教授，因支持台灣民主運動並捐款給《美麗島雜誌》，在回台探親時被三名警備總部人員從家中帶走，進行長達數小時的徹夜訊問，主要追查他在海外支持台灣民主與台獨活動的資金往來。<br><br><b class='base2'>7/3：陳屍台大校園</b><br>清晨，陳文成的屍體在台灣大學研究生圖書館（今台大圖書資訊學系系館）旁的草地上被發現，身上有多處重創與骨折。官方當時迅速定調為「畏罪自殺」，但家屬與美國法醫驗屍後，皆指出屍體有明顯遭毆打與從高處被拋下的「他殺」痕跡。歷史影響： 此案震驚美國政壇，美國國會隨後召開聽證會，痛斥國民黨在美國校園佈建「校園特務」監控留學生的惡行，逼迫蔣經國政府承諾不再拒發海外異議人士的返台簽證，此案至今仍是著名的政治懸案。"])
+
+//❂
+//<7-1984>❀
+O.tagTextHistory.push(["<b class='base2'>3/12：《自由時代周刊》創辦</b><br>鄭南榕在戒嚴時期創辦了《自由時代周刊》，並自任總編輯。他大膽採取「爭取百分之百言論自由」為宗旨，登記了多達58張雜誌執照（當時稱為「備胎執照」）。當某一期的雜誌遭到威權政府查禁、停刊，他隔週就立刻換上另一張執照繼續出版。<br><br><b class='base2'>10/15：江南案</b><br>「江南」是美籍華人作家劉宜良的筆名。他在美國撰寫了《蔣經國傳》，內容揭露了許多蔣家的宮廷內幕與蔣經國的早年辛酸，引發國民黨高層強烈不滿。劉宜良在美國加州舊金山德里市的自家住宅車庫內，遭到兩名男子近距離開槍射殺，當場身亡。1984年11月（台美情報風暴與大逮捕）： 美國聯邦調查局（FBI）迅速破案，證實兇手是台灣黑幫「竹聯幫」老大陳啟禮與董桂森。更驚人的是，陳啟禮供出這是奉中華民國國防部情報局局長汪希苓的密令「制裁」刺殺。為了滅口，台灣政府隨後發動「一清專案」逮捕陳啟禮，但陳啟禮早已在海外留下自保錄音帶，揭穿真相。國民黨派特務到美國領土刺殺美國公民，徹底激怒了美國政府。這場風暴迫使蔣經國不得不將情報局長汪希苓判刑，並公開宣布「蔣家人未來不會，也不能競選下一任總統」，直接終結了蔣家第三代（如蔣孝武）的接班可能，加速了台灣的民主化。"])
+
+//❂
+//<7-1986>❀
+O.tagTextHistory.push(["<b class='base2'>9/28：民主進步黨成立</b><br>隨著「黨外運動」在1970至1980年代的累積，反對派仕紳與青年律師在台北市圓山大飯店秘密集會。在台灣尚未解除戒嚴、隨時有被逮捕風險的紧繃氛圍下，由費希平、謝長廷、尤清等人領銜，破天荒宣布成立「民主進步黨」（民進黨）。歷史影響： 這是台灣戰後第一個本土反對黨。當時蔣經國總統在國內外強大壓力下，最終選擇「冷處理」，公開宣布「時代在變，環境在變，潮流也在變」，並未採取逮捕鎮壓。民進黨的成立直接衝撞了威權體制的底線，迫使國民黨政府在隔年（1987年7月15日）宣布解除戒嚴。"])
+//❂
+//<7-1987>❀
+O.tagTextHistory.push(["<b class='base2'>7/15：解除戒嚴</b><br>蔣經國總統順應國內黨外運動的巨大壓力，以及國際社會（如美國）的關注，宣布解除自1949年以來實施了長達38年又56天的戒嚴令。"])
+//❂
+//<7-1988>❀
+O.tagTextHistory.push(["<b class='base2'>1/13：李登輝就任總統</b><br>蔣經國因糖尿病引發多重器官衰竭於台北逝世。<br><br><b class='base2'>5/20：農民抗議</b><br>由林國華、蕭裕珍等人擔任總指揮，集結了來自雲林、彰化、南投、嘉義等地的數千名農民，北上前往台北市（國父紀念館集結）進行請願，當時提出的「七大訴求」。遊行隊伍原本預計前往立法院遞交請願書。然而在下午，現場因種種因素（如借用立法院廁所受阻、警方封鎖線推擠等）導致情緒失控。隨後，部分群眾拆下了立法院的招牌，引發了警方動用噴水車與強力鎮壓。<br><br><b class='base2'>5/21：清晨</b><br>劇烈衝突：街頭出現嚴重的石塊、棍棒與警方警棍、鎮壓水車的對抗，導致大量農民、聲援大學生、記者以及憲警人員受傷。大規模逮捕： 警方最終逮捕了超過百人。後續檢方以《刑法》妨害公務、聚眾施暴等罪名，起訴了包括總指揮林國華、多位農運幹部、甚至聲援的台大學生與憲政觀察人員。"])
+//❂
+//<7-1989>❀
+O.tagTextHistory.push(["<b class='base2'>1988/12/10：鄭南榕刊登台灣共和國憲法草案</b><br>鄭南榕在《自由時代周刊》第254期上，完整刊登了由旅美學者許世楷所撰寫的《台灣共和國憲法草案》。歷史轉折： 儘管台灣當時已於1987年解嚴，但高層威權結構並未完全改變。<br><br><b class='base2'>1：誓死抵抗</b><br>高等法院檢察處向鄭南榕發出「涉嫌叛亂罪」的傳票。鄭南榕認為「台灣獨立」屬於言論自由的範疇，國家無權定罪，因此公開宣布：「國民黨不能逮捕到我，只能逮捕到我的屍體。」隨後他將自己反鎖在雜誌社辦公室內，並預備了汽油與打火機，展開長達71天的誓死抵抗。<br><br><b class='base2'>4/7：拒捕自焚與殉道</b><br>清晨，台北市警察局局長下令派出大批鎮暴警察與霹靂小組，強力破門攻入位於台北市民權東路的雜誌社進行拘提。在警方破門強攻的關鍵時刻，鄭南榕毅然在總編輯室內點燃汽油自焚，壯烈犧牲，享年42歲。歷史深遠影響：催生刑法100條修正：鄭南榕的死引發社會巨大的悲憤與震撼，直接激化了後來的民主運動。在強大民意壓力下，立法院最終於1992年廢除了《懲治叛亂條例》，並修正了《刑法》第100條，讓台灣人從此不再因為發表政治言論、主張台獨或反對政府而遭到叛亂罪起訴。訂定言論自由日：中華民國政府於2016年正式將鄭南榕自焚的4月7日定為國家級的「言論自由日」，用以紀念他為台灣自由所做的重大犧牲。"])
+//❂
+//<7-1990>❀
+O.tagTextHistory.push(["<b class='base2'>3/16：野百合學運</b><br>為了抗議國民黨控制的「國民大會」（萬年代表）自我擴權、自行加薪，幾名台大學生到中正紀念堂廣場靜坐抗議，隨後引發全台數千名大學生集結響應，並以台灣特有種「野百合」作為追求自主、純潔與生命力強韌的運動精神象徵。<br><br><b class='base2'>3/21：李登輝接見學生</b><br>剛當選中華民國第八任總統的李登輝，破天荒在總統府接見了學運學生代表，並當場允諾學生提出的四大政治訴求，包括召開國事會議、廢除《動員戡亂時期臨時條款》、以及廢除萬年國會。這場學運以和平落幕，但它給了李登輝極大的民意籌碼去對抗國民黨內的保守派勢力。1991年底，在台長達40多年、從未改選過的萬年民代（俗稱萬年國會）正式全面退職，台灣正式迎來1992年的國會全面改選，以及1996年的首次總統直選。"])
+//❂
+//<7-1991>❀
+O.tagTextHistory.push(["<b class='base2'>5/1：廢止動員戡亂時期臨時條款</b><br>1990年野百合學運爆發後，學生提出終止臨時條款的政治訴求。李登輝總統順應民意，於1991年4月召開國民大會完成憲法增修，並於4月30日正式簽署總統令，公告自1991年5月1日起廢止《動員戡亂時期臨時條款》，終止動員戡亂時期。這象徵著台灣法理威權統治的徹底終結。政府不再將中國共產黨定調為法理上的「叛亂團體」，兩岸關係進入新階段；更重要的是，憲法正式恢復全面運作，直接促成了1991年底「萬年國會」老代表全面退職，台灣正式迎來1992年國會全面改選與民主新紀元。"])
+//❂
+//<7-1992>❀
+O.tagTextHistory.push(["<b class='base2'>5/15：刑法100條修正案</b><br> 舊法規定「意圖顛覆政府、思想造反」即可處死刑或無期徒刑，是白色恐怖禁錮言論自由的最強法源。鄭南榕自焚、一○○行動聯盟抗爭後，立法院廢除「思想叛亂罪」，明定必須有「強暴或脅迫」的實際行動才構成叛亂。台灣人自此獲得百分之百的思想與言論自由。<br><br><b class='base2'>12/19：二屆立法委員選舉</b><br> 這是台灣歷史上第一次「全額」由台灣人民自主投票選出的立法委員選舉。這場選舉總共改選161個席次（包含區域、不分區與僑選），朝野各黨派展開了極其激烈的政黨大對決。選舉結果：中國國民黨：獲得 95 席（得票率 53%），雖然維持國會過半多數，但席次大幅縮水，內部也正式分裂為主流派與非主流派（後來的「新黨」前身）。民主進步黨：在黃信介「東征」花蓮等基層開拓下，一舉斬獲 51 席（得票率 31%），成功突破「三分之一」的修憲與重大法案牽制門檻，在國會奠定了強大的反對黨地位。"])
+//❂
+//<7-1995>❀
+O.tagTextHistory.push(["<b class='base2'>3/23：二二八事件處理及補償條例</b><br>這是台灣政府歷史上第一部正式針對威權時代「二二八事件」進行官方平反、調查與賠償的專法（後於1997年修正為「賠償」條例）。依法成立了「二二八事件紀念基金會」，開始受理受難者家屬的賠償申請、恢復名譽，並促成了國家級二二八紀念館的設立。"])
+//❂
+//<7-1996>❀
+O.tagTextHistory.push(["<b class='base2'>5/20：李登輝當選總統</b><br>完成萬年國會改選，準備迎向首次民選。"])
+//❂
+//<7-1998>❀
+O.tagTextHistory.push(["<b class='base2'>5/28：戒嚴時期不當叛亂暨匪諜審判案件補償條例</b><br>專門針對二二八事件之後（1949年－1987年戒嚴期間），因白色恐怖、懲治叛亂條例、檢肅匪諜條例而遭到軍事法庭冤判、監禁或處決的無辜民眾進行補償。實質影響： 成立了「白恐補償基金會」，發放數百億補償金，是撫平白色恐怖政治受難者傷痛的重要法源。"])
+//❂
+//<7-1999>❀
+O.tagTextHistory.push(["<b class='base2'>12/15：國家檔案法</b><br> 威權時代情治單位（如警總、國安局、調查局）留下了海量的秘密監聽、告密與審判檔案，過去一直被政府以國家安全為由列為極機密。該法通過後，政府成立了「國家發展委員會檔案管理局」，強制要求各部會清查並移交歷史檔案，成為後來轉型正義「開放政治檔案」、「尋找加害者與受害者真相」的法理基石。"])
+//❂
+//<7-2000>❀
+O.tagTextHistory.push(["<b class='base2'>5/20：陳水扁當選總統</b><br>副總統：呂秀蓮"])
+//❂
+//<7-2008>❀
+O.tagTextHistory.push(["<b class='base2'>5/20：馬英九當選總統</b><br>副總統：蕭萬長、吳敦義"])
+//❂
+//<7-2016>❀
+O.tagTextHistory.push(["<b class='base2'>5/20：蔡英文當選總統</b><br>副總統：蘇嘉全、陳建仁<br><br><b class='base2'>7/15：政黨及其附隨組織不當取得財產處理條例</b><br>簡稱《不當黨產條例》。威權時代國民黨「黨政不分」、「以黨領政」，將許多國家土地、國庫財產轉化為私人黨產，造成戰後政黨競爭的不公平。行政院依法設立「不當黨產處理委員會」（黨產會），全面調查、凍結並向國民黨追討在威權時期（1945年8月15日起）以不當手段取得的財產，將其收歸國有。"])
+//❂
+//<7-2017>❀
+O.tagTextHistory.push(["<b class='base2'>12/5：促進轉型正義條例</b><br>歷經朝野多次激烈辯論與協商，民進黨憑藉國會多數優勢，在立法院三讀通過《促進轉型正義條例》。"])
+//❂
+//<7-2018>❀
+O.tagTextHistory.push(["<b class='base2'>2018/8/24：東廠事件</b><br>時任促轉會副主委兼發言人的張天欽，在副主委辦公室召集內部官員開會。當時正值2018年底地方縣市長大選期間，張天欽在會議中點名國民黨籍新北市長候選人侯友宜（因侯友宜在威權時期擔任警官，曾負責拘提鄭南榕）是「轉型正義最惡劣的例子」，並意圖推動《除垢法》（人事清查制度）來針對侯友宜。張天欽更在會中自嘲調侃：「我們本來是南廠，現在變西廠，後來升格變東廠。」<br><br><b class='base2'>2018/8/24：監察院全票通過彈劾張天欽</b><br>當時參與該場會議的促轉會副研究員吳佩蓉，因不滿內部開會流於政黨惡鬥、偏離行政中立，暗中錄音並將錄音檔及秘密會議紀錄提供給《鏡週刊》。 歷經一年的調查，監察院於2019年10月1日召開審查會，以 12比0 的全票通過彈劾張天欽。"])
+//❂
+//<7-2019>❀
+O.tagTextHistory.push(["<b class='base2'>7/24：政治檔案條例</b><br>過去1999年制定的普通法《檔案法》無法有效對抗情治單位，國安局、調查局等常以國家安全、情報來源為由拒絕公開白色恐怖檔案。核心條文：蔡英文總統於該日公布《政治檔案條例》專法。它明定適用範圍為1945年8月15日至1992年11月6日（威權統治時期）與二二八、戒嚴相關的檔案；並確立了「特別法優於普通法」原則，情治機關不得再以《國家機密保護法》為由拒絕移交政治檔案給檔案管理局。"])
+//❂
+//<7-2021>❀
+O.tagTextHistory.push(["<b class='base2'>10/16：黃國書事件</b><br>媒體頭條披露民進黨新潮流系立委黃國書曾任線民。黃國書於當天凌晨在臉書發表聲明，坦承在學生時代曾被情治單位脅迫擔任「抓耙仔」監控同袍，隨後宣布退出民進黨、並承諾此後不再尋求立委連任。<br><br><b class='base2'>10/19：江鵬堅臥底疑雲</b><br>前民進黨主席施明德接受媒體專訪，公開證實民進黨創黨第一任黨主席江鵬堅在過世前（2000年），曾親口向他坦承自己是調查局布建的臥底，並將當年的監控檔案交還，引發綠營內部巨大內訌與長達數月的隔空論戰。<br><br><b class='base2'>2022/5/31：促轉會總結報告</b><br>促進轉型正義委員會（促轉會）在解散當天提交總結報告。報告中以法理與檔案佐證，揭露威權統治時期情治單位在校園、社會佈建的線民高達數萬人，並首度系統性分析了「布建線民」的運作與給薪模式，為這場線民風暴提供了官方歷史檔案的法理定調。這段時間的檔案大開，讓台灣社會深刻體會到威權體制當年對人性的撕裂與滲透。"])
+//❂
+//<7-2022>❀
+O.tagTextHistory.push(["<b class='base2'>5/17：威權統治時期國家不法行為權利回復條例</b><br>隨著促轉會於2022年5月底屆滿解散，立法院在解散前夕通過此法，將業務常態化，並將過去的「補償」升格為「權利回復」。擴大平反範圍，不僅賠償人身自由損失，更首度建立法源，允許當年被威權政府沒收財產、沒收土地的政治受難者或其家屬，可以向政府申請返還原財產或進行金錢賠償。"])
+//❂
+//<7-2024>❀
+O.tagTextHistory.push(["<b class='base2'>2：政治檔案條例修正案，</b><br>新法嚴格限制保密條件，迫使各部會重新自我審查，僅剩極少數涉及情報布署的內容經國安會同意可部分遮掩延長，其餘九成六以上檔案都必須依法解密解凍。<br><br><b class='base2'>5/20：賴清德當選總統</b><br>副總統：蕭美琴"])
+//❂
+//<7-2026>❀
+O.tagTextHistory.push(["<b class='base2'>2/23：戒嚴檔案全數解密</b><br>國家安全局正式宣布，歷經1年4個月的逐件人工清查，民國81年以前與林宅血案直接或間接相關的政治檔案已全數解密，並將5萬1,133件戒嚴時期檔案「1件不留、1字不遮」地移交給國發會檔案局。根據國家發展委員會檔案管理局最新統計，目前入庫的1,373筆林宅血案政治檔案已全數完成解密。除了258筆涉及當事人高度個人隱私的內容將採分批依程序開放外，民眾皆可在「國家檔案資訊網」直接線上查閱相關目錄並申請應用。<br><br><b class='base2'>2/28：核心證據已遭「系統性毀滅」</b><br>在2026年的二二八事件79週年追思典禮上，總統賴清德針對林宅血案的解密現狀向國際與國人發表公開談話。殘酷真相： 賴清德證實，雖然國安局移交了14萬件無遮蔽的政治檔案（含歷年累積），但調查發現林宅血案的關鍵檔案並不完整，且過去留下的許多口述歷史已被證實是當年編造的虛假不實資料。根據前促轉會與監察院的結案調查，當年以警總為主的情治系統涉嫌主導誤導偵辦、包庇犯嫌，且在威權統治下將最核心的真兇犯罪證據進行了「系統性的毀滅」，這也是為何即便至今檔案全數打開，歷史研究者仍面臨「拼圖缺角」，難以直接在法律上抓出真兇的根本原因。"])
+//❂
+tagSymble=["❂","❁","❀"]
+//<5-標題內文框 lineText>❀
+function lineText(){
+O["tagTextBig"]=document.createElement("div");
+O["map"].appendChild(O["tagTextBig"]);
+O["tagTextBig"].style.position="absolute"
+O["tagTextBig"].style.top=tagTextBigBs[3]+"%"
+O["tagTextBig"].style.width=tagTextBigBs[1]+"%"
+O["tagTextBig"].style.height=tagTextBigBs[2]+"%"
+O["tagTextBig"].style.left=(100-tagTextBigBs[1])*0.5+"%"
+O["tagTextBig"].style.borderBottom="2px solid black";
+
+O["tagTextBig"].style.display="flex";
+O["tagTextBig"].style.alignItems="center";
+O["tagTextBig"].style.justifyContent="center";
+
+
+O["tagTextBig2"]=document.createElement("div");
+O["tagTextBig"].appendChild(O["tagTextBig2"]);
+
+
+
+O["tagTextBig2"].innerHTML="<spen style='font-size:32px'>請點選圖標</spen>"
+
+
+
+O["tagTextSmall"]=document.createElement("div");
+O["map"].appendChild(O["tagTextSmall"]);
+O["tagTextSmall"].style.position="absolute"
+O["tagTextSmall"].style.top=tagTextSmallBs[2]+"%"
+O["tagTextSmall"].style.left=(100-tagTextSmallBs[1])*0.5+"%"
+O["tagTextSmall"].style.width=tagTextSmallBs[1]+"%"
+
+O["tagTextSmall"].style.border="0px solid black";
+O["tagTextSmall"].className="base3"
+
+
+}
+//❂
+//<5-時間主軸函式>❀
+function lineBar(){
+O["linebar"]=document.createElement("div");
+O["map"].appendChild(O["linebar"]);
+//<6-大時間軸>
+O["linebar"].style.width="90%";
+O["linebar"].style.height="5%";
+O["linebar"].style.left="5%";
+O["linebar"].style.top="15%";
+O["linebar"].style.position="absolute";
+O["linebar"].style.display="flex";
+O["linebar"].style.alignItems="center";
+O["linebar"].style.justifyContent="center";
+
+//<6-主軸>
+O["linebarw"]=document.createElement("div");
+O["linebar"].appendChild(O["linebarw"]);
+O["linebarw"].style.border="2px solid black";
+O["linebarw"].style.width="100%";
+O["linebarw"].style.position="absolute";
+
+}
+//❂
+//<5-刻度函式 lineBarDu>❀
+function lineBarDu(Q){
+//<6-刻線>
+O["linebar"+Q]=document.createElement("div");
+O["linebar"].appendChild(O["linebar"+Q]);
+O["linebar"+Q].style.border="1px solid black";
+O["linebar"+Q].style.height="50%";
+O["linebar"+Q].style.position="absolute";
+
+O["linebar"+Q].style.left=(Q-1945)*(100/(2030-1945))+"%";
+
+
+
+//<6-文字>
+O["linebarText"+Q]=document.createElement("div");
+O["linebar"].appendChild(O["linebarText"+Q]);
+O["linebarText"+Q].style.width="5%";
+//O["linebarText"+Q].style.border="1px solid black";
+
+O["linebarText"+Q].style.top="100%";
+O["linebarText"+Q].innerHTML=Q
+O["linebarText"+Q].style.fontSize="24px"
+O["linebarText"+Q].style.position="absolute";
+O["linebarText"+Q].style.display="flex";
+O["linebarText"+Q].style.alignItems="center";
+O["linebarText"+Q].style.justifyContent="center";
+
+O["linebarText"+Q].style.left=((Q-1945)*(100/(2030-1945))-2.5)+"%";
+
+
+
+}
+//❂
+//<5-小標籤函式 tag>
+//<6-小標籤本體>❀
+var tagBs=0
+
+function tag(Q){
+
+
+O["tagXY"]=document.createElement("div");
+O["linebar"].appendChild(O["tagXY"]);
+//O["tagXY"].style.border="2px solid black";
+O["tagXY"].style.width="1%";
+O["tagXY"].style.height="80%";
+O["tagXY"].style.top="-35%";
+O["tagXY"].style.position="absolute";
+O["tagXY"].style.display="flex";
+O["tagXY"].style.alignItems="center";
+O["tagXY"].style.justifyContent="center";
+
+//❂
+//<6-小標籤dash 已刪除>❀
+/*
+O["tagdash"]=document.createElement("div");
+O["tagXY"].appendChild(O["tagdash"]);
+O["tagdash"].style.border="1px  dashed  black";
+O["tagdash"].style.height="100%";
+O["tagdash"].style.position="absolute";
+
+*/
+//❂
+//<6-圖標>❀
+O["tag"+tagBs]=document.createElement("div");
+O["tagXY"].appendChild(O["tag"+tagBs]);
+O["tag"+tagBs].className="tag";
+O["tag"+tagBs].name=tagBs
+O["tag"+tagBs].style.fontSize=O.tagPosition[2]
+
+O["tag"+tagBs].style.position="absolute";
+
+O["tag"+tagBs].style.top=O.tagPosition[0]+"%";
+
+
+//O["tag"+tagBs].style.zIndex = 100   //dash拿掉了
+//O["tag"+tagBs].style.background="white";
+//O["tagXY"].style.border="2px solid black";
+
+//❂
+//<6-3種不同>❀
+O["tagXY"].style.left=((O["tagYear"+Q][tagBs]-1945)*(100/(2030-1945))-0.5)+"%"
+
+switch(Q){
+case "History":
+O["tag"+tagBs].innerHTML=tagSymble[0]
+
+
+break
+case "Edit":
+O["tag"+tagBs].innerHTML=tagSymble[1]
+
+
+O["tag"+tagBs].style.top=O.tagPosition[1]+"%";
+
+break
+case "Life":
+O["tag"+tagBs].innerHTML=tagSymble[2]
+O["tag"+tagBs].style.top=O.tagPosition[0]+(O.tagPosition[1]-O.tagPosition[0])*2+"%";
+
+break
+
+}
+//❂
+//<6-點圖標>❀
+O["tag"+tagBs].onmousedown=function(e){
+
+
+
+
+O["tagTextBig2"].innerHTML="<b class='base1'>"+O["tagYear"+Q][this.name]+"</b>"
+
+if(O["tagYear"+Q][this.name]-Born>=0){
+O["tagTextBig2"].innerHTML+="<spen class='base2'> (案主"+(O["tagYear"+Q][this.name]-Born)+"歲)</spen>"
+}else{
+O["tagTextBig2"].innerHTML+="<spen class='base2'> (案主未出生)</spen>"
+}
+
+
+
+O["tagTextSmall"].innerHTML=O["tagText"+Q][this.name]+"<br>"
+
+}
+
+
+tagBs+=1
+}
+//❂
+//<5-時間軸執行函示 linehistory>❀
+function line(){ Omap()
+tagBs=0
+
+//❂
+//<6-畫時間軸>❀
+lineBar()
+for(i=1945;i<=2030;i+=5){
+lineBarDu(i)
+}
+O["linebar1945"].style.border="2px solid black";
+O["linebar1945"].style.left="-0.1%";     //奇妙的突出現象
+O["linebar2030"].style.border="2px solid black";
+
+
+
+//❂
+//<6-插標籤>❀
+
+tagBs=0
+for(i=0;i<O.tagYearLife.length;i++){
+tag("Life")
+}
+
+
+tagBs=0
+for(i=0;i<O.tagYearEdit.length;i++){
+tag("Edit")
+}
+tagBs=0
+
+for(i=0;i<O.tagYearHistory.length;i++){
+tag("History")
+}
+
+tagBs=0
+
+//❂
+//<6-標題與內文>❀
+lineText()
+
+}
+//❂
+
+
+
+
+
+
+
+
+
+
+//<2-執行>
+sel.onchange=function(e){
+document.body.removeChild(O["map"]);
+document.body.style.background=bodycolor[1]
+if(sel.value==0){list()}
+if(sel.value==1){basedata()}
+if(sel.value==2){familyPIC()}
+if(sel.value==3){line()}
+
+}
+list()
+</script>
+</body>
+</html>
