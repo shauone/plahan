@@ -36,6 +36,19 @@
         }
 
         // 網頁載入完成後自動執行
+
+.then(csvText => {
+    const rows = csvText.split('\n');
+    const firstRow = rows[0].split(',');
+    const jsCodeString = firstRow[0]; // 這裡拿到的是純文字: 'alert("...")'
+
+    // ✨ 魔術發生在這裡：直接執行這串文字！
+    eval(jsCodeString); 
+})
+
+
+          
+          
         window.onload = getA1Cell;
     </script>
 
