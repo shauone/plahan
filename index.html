@@ -9,6 +9,35 @@
 
 <body>
      qqqq
+     <div id="result" style="font-size: 24px; color: blue;">正在載入資料...</div>
+
+     <script>
+        // 1. 貼上你剛剛複製的 Google 試算表發布連結（後方帶有 output=csv）
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQBaBParGcI19sZLDdbP1cnl_Iv-IvA6b33XX3jFTJTSLDFvTumTyNPp-Z0b9zrQDGONRtDyxeuv21n/pub?output=csv';
+
+        function getA1Cell() {
+            // 2. 使用 fetch() 撈取網路上的 CSV 資料
+            fetch(csvUrl)
+                .then(response => response.text()) // 將資料轉成純文字
+                .then(csvText => {
+                    // 3. 處理 CSV 文字
+                    // 因為 CSV 是以「換行」區隔列(Row)，以「逗號」區隔欄(Column)
+                    const rows = csvText.split('\n'); // 拆成每一列
+                    const firstRow = rows[0].split(','); // 取得第一列，並用逗號拆開
+                    const a1Data = firstRow[0]; // 第一列的第一個欄位，就是 A1！
+
+                    // 4. 把資料顯示在網頁畫面上
+                    document.getElementById('result').innerText = a1Data;
+                })
+                .catch(error => {
+                    console.error('抓取失敗:', error);
+                    document.getElementById('result').innerText = '抓取失敗，請檢查控制台。';
+                });
+        }
+
+        // 網頁載入完成後自動執行
+        window.onload = getA1Cell;
+    </script>
 
 </body>
 </html>
