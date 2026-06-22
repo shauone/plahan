@@ -63,7 +63,7 @@
 
                     // 5. 清理空白並執行
                     jsCodeString = jsCodeString.trim();
-                    document.getElementById('result').innerText = `成功讀取並執行指定儲存格資料！`;
+                    document.getElementById('result').innerText = jsCodeString;
                     
                     // 執行該儲存格裡的 JS 敘述
                     eval(jsCodeString); 
